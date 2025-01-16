@@ -1,14 +1,25 @@
 import java.rmi.Naming;
 
 class AdderProxy implements IRemote{
-    
+    // To achieve aggregation in the proxy pattern, we create an instance of the remote object
+    private IRemote remoteAdder;
+
+    AdderProxy(){
+        try{
+            remoteAdder = (IRemote) Naming.lookup("rmi://localhost:5555/add");
+        } 
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+    }
+
     @Override
     public int add(int a, int b){
         try{
-            IRemote remoteAdder = (IRemote) Naming.lookup("rmi://localhost:5555/add");
             return remoteAdder.add(a, b);
-        } 
+        }
         catch(Exception e){
+            System.out.println("Error: " + e);
             return -1;
         }
     }
