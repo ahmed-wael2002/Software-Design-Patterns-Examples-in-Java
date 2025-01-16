@@ -53,7 +53,7 @@ class RocketLauncherAdapter implements IHero{
     }
 }
 
-public class Main{
+public class OneWayAdapter{
     private static void play(IHero hero){
         hero.attack();
         hero.move();
