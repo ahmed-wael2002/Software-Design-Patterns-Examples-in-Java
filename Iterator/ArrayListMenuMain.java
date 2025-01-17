@@ -1,5 +1,38 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
+/********************************************************************************************/
+/*                                    Java Iterator                                         */
+/********************************************************************************************/
+class PancakesJavaIterator implements Iterator<MenuItem>{
+    ArrayList<MenuItem> menuItems;
+    int position = 0;
+
+    PancakesJavaIterator(ArrayList<MenuItem> menuItems){
+        this.menuItems = menuItems;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return position<menuItems.size();
+    }
+
+    @Override
+    public MenuItem next() {
+        MenuItem item = menuItems.get(position);
+        position++;
+        return item;
+    }
+
+    @Override
+    public void remove() {
+        menuItems.remove(position);
+    }
+}
+
+/********************************************************************************************/
+/*                                    Iterator Pattern                                      */
+/********************************************************************************************/
 class PancakesMenuIterator implements IIterator{
     ArrayList<MenuItem> menuItems;
     int position = 0;
@@ -21,7 +54,9 @@ class PancakesMenuIterator implements IIterator{
     }
 }
 
-
+/********************************************************************************************/
+/*                                    MenuItem                                              */
+/********************************************************************************************/
 class PancakesMenu implements IMenu{
     ArrayList<MenuItem> items;
     
@@ -41,8 +76,15 @@ class PancakesMenu implements IMenu{
     public IIterator createIterator(){
         return new PancakesMenuIterator(this.items);
     }
+    
+    public Iterator<MenuItem> createJavaIterator(){
+        return new PancakesJavaIterator(this.items);
+    }
 }
 
+/********************************************************************************************/
+/*                                    Main                                                  */
+/********************************************************************************************/
 public class ArrayListMenuMain {
     static void printUsingIterator(IIterator iterator){
         MenuItem item;
@@ -76,5 +118,12 @@ public class ArrayListMenuMain {
         // Printing the pancakes menu
         iterator = pancakesMenu.createIterator();
         printUsingIterator(iterator);
+
+        // Now using Java's built-in iterator
+        Iterator<MenuItem> javaIterator = pancakesMenu.createJavaIterator();
+        while(javaIterator.hasNext()){
+            MenuItem item = javaIterator.next();
+            System.out.println(item.getName() + " : " + item.getPrice());
+        }
     }
 }
